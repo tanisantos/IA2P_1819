@@ -9,16 +9,22 @@ Created on Mon Oct 15 15:51:49 2018
 
 class Node():
     def __init__(self, prob, parents = []):
-        self.prob = prob          #np.array len(prob)==len(parents)
+        if len(parents) == 0:
+            self.prob = prob[0]   #valor
+        else:
+            self.prob = prob      #np.array - tabela
         self.parents = parents    #lista
     
     def computeProb(self, evid):
-    ''' calculo prob condicionada
-        evid - tuplo c/ probs de tds os nodes da BN
-        retorna tuplo(?) com duas prob (False e True)'''
-        pass
+    ''' calcula prob condicionada
+        evid - tuplo c/ evidencias de tds os nodes da BN
+        retorna tuplo com duas prob (False e True)'''
+        probTrue = self.prob
+        for i in range(len(parents)):
+            probTrue = probTrue[evid[self.parents[i]]]
 
-        return 0
+        return (1 - probTrue, probTrue)
+
     
 class BN():
     def __init__(self, gra, prob):
