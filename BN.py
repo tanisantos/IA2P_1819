@@ -16,11 +16,11 @@ class Node():
         self.parents = parents    #lista
     
     def computeProb(self, evid):
-    ''' calcula prob condicionada
+        '''calcula prob condicionada
         evid - tuplo c/ evidencias de tds os nodes da BN
         retorna tuplo com duas prob (False e True)'''
         probTrue = self.prob
-        for i in range(len(parents)):
+        for i in range(len(self.parents)):
             probTrue = probTrue[evid[self.parents[i]]]
 
         return (1 - probTrue, probTrue)
@@ -32,8 +32,8 @@ class BN():
         self.prob = prob          #lista de Nodes
 
     def computePostProb(self, evid):
-    ''' não sei
-        evid - tuplo c/ probs de tds os nodes da BN
+        '''não sei
+        evid - tuplo c/ evids de tds os nodes da BN
         retorna um valor'''
         pass
                
@@ -41,9 +41,11 @@ class BN():
         
         
     def computeJointProb(self, evid): 
-    ''' calcula prob conjunta (tabela)
-        evid - tuplo c/ probs de tds os nodes da BN
+        '''calcula prob conjunta
+        evid - tuplo c/ evids de tds os nodes da BN
         retorna lista/tuplo com... (am confusion)'''
-        pass
-        
-        return 0
+        prod = 1
+        for i in range(len(self.gra)):
+            prod *= self.prob[i].computeProb(evid)[evid[i]]
+
+        return prod
