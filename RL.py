@@ -9,6 +9,8 @@ import random
 
 from tempfile import TemporaryFile
 outfile = TemporaryFile()
+
+ALPHA = 0.6
 	
 class finiteMDP:
 
@@ -62,9 +64,15 @@ class finiteMDP:
 
             
     def traces2Q(self, trace):
-                # implementar esta funcao
-        
-
+        nQ = np.zeros((self.nS,self.nA)) #oldQ
+        while True:
+            nQ = np.copy(self.Q)
+            for step in trace:
+                s_ini, a, s_fin, r = step
+                self.Q[int(s_ini), int(a)] = self.Q[int(s_ini), int(a)] + ALPHA * (int(r) + self.gamma * max(self.Q[int(s_fin), :]) - self.Q[int(s_ini), int(a)])
+            diff = np.linalg.norm(nQ - self.Q)
+            if diff < 0.010:
+                break
         return self.Q
     
     def policy(self, x, poltype = 'exploration', par = []):
