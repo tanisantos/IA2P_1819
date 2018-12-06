@@ -76,16 +76,10 @@ class finiteMDP:
         return self.Q
     
     def policy(self, x, poltype = 'exploration', par = []):
-        # implementar esta funcao
-        
         if poltype == 'exploitation':
-            pass
-
-            
+            a = np.argmax(par[x,:])
         elif poltype == 'exploration':
-            pass
-
-                
+            a = random.choice(range(self.nA))
         return a
     
     def Q2pol(self, Q, eta=5):
