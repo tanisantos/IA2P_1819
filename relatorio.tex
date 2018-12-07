@@ -24,11 +24,38 @@
 	%Para o processo de inferência o algoritmo de eliminação não é necessário
 	%mas discussão da diferença entre eles
 
+	Foi implementada uma rede Bayesiana acíclica representada pela classe BN e os seus nodes pela classe Node.
+
 	%No relatório deve incluir-se:
 	%• descrição crítica dos resultados pedidos
 	%• descrição dos métodos implementados incluindo vantagens/desvantagens e limitações
 	%• discussão da complexidade computacional e possíveis métodos alternativos
+	\subsection{Resultados}
+	Os resultados pedidos estão de acordo com os resultados obtidos. Estes parecem, portanto, corretos. 
 
+	\subsection{Métodos Implementados}
+	\subsubsection{classe Node}
+	A classe representa um Node da rede Bayesiana e contêm a tabela de probabilidades de acordo com a vericidade dos pais e uma lista destes.
+	\paragraph{computeProb}
+	Na classe Node apenas foi implementado o método computeProb que retorna a probabilidade do acontecimento do Node ser \textit{false} e de ser \textit{true} de acordo com a evidência dada.
+	A complexidade deste método é O(\textit{no. parents}), sendo \textit{no. parents} o número de pais do Node.
+
+	\subsubsection{classe BN}
+	A classe BN representa uma rede Bayesiana e é composta por uma lista de Nodes e o grafo da rede, contendo os pais de cada Node.
+	\paragraph{computeJointProb}
+	Calcula a probabilidade conjunta da rede tendo em conta a evidência dada. É usada o método computeProb da classe Node
+	A evidência não pode ter elementos desconhecidos.
+	A complexidade deste método é O($n^2$), sendo $n$ o número de nodes da rede Bayesiana.
+	\paragraph{substituteUnknowns}
+	Método auxiliar a \textit{computeUnknownJointProb} que, dado uma evidência com $x$ acontecimentos desconhecidos e um conjunto de $x$ de valores (0 ou 1), retorna a evidência com os valores desconhecidos substituídos pelos novos valores dados.
+	A complexidade deste método é O(\textit{no. desc}), sendo \textit{no. desc} o número de valores desconhecidos na evidência.
+	\paragraph{computeUnknownJointProb}
+	Método auxiliar a \textit{computePostProb} que, dada uma evidência com valores desconhecidos, gera todas as possibilidades dessa evidência sem valores desconhecidos e calcula a probabilidade conjunta, usando \textit{computeJointProb}.
+	A complexidade deste método é O($2^m * n^2$), sendo $m$ o número de elementos desconhecidos e $n$ o número de nodes da rede Bayesiana. 
+	\paragraph{computePostProb}
+	Calcula a probabilidade a-posteriori da variável $x$ indicada na evidência (por -1). Usa \textit{computeUnknownJointProb} para calcular as probabilidades conjuntas para o caso de $x$ ser \textit{true} e para o caso de ser \textit{false}.
+	De seguida usa a fórmula da probabilidade a-posteriori para a calcular e esta é retornada.
+	A complexidade deste método é a mesma de \paragraph{computeUnknownJointProb}, ou seja, O($2^m * n^2$), sendo $m$ o número de elementos desconhecidos e $n$ o número de nodes da rede Bayesiana.
 	\section{Aprendizagem por Reforço}
 	%Para cada um dos ambientes, e por inspecção das trajectórias, fazer uma representação
 	%gráfica do ambiente no qual o agente se move (1val).
